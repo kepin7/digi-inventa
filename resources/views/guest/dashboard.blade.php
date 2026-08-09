@@ -76,7 +76,7 @@
           <div class="card">
             <div class="card-header">
               <h3><i class="fas fa-clock-rotate-left" style="color:var(--green-600);margin-right:8px"></i>Aktivitas Terbaru</h3>
-              <button class="btn btn-sm btn-outline">Lihat Semua</button>
+              <a href="{{ route('guest.katalog.index') }}" class="btn btn-sm btn-outline">Lihat Semua</a>
             </div>
             <div class="card-body">
               <ul class="activity-list">

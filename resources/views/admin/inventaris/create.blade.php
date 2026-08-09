@@ -127,10 +127,14 @@
               </div>
               <div class="form-field full">
                 <label>Upload Gambar Barang</label>
-                <div class="upload-zone" onclick="alert('Fitur upload gambar aktif pada versi penuh.')">
+                <div class="upload-zone" onclick="document.getElementById('gambarInput').click()" style="cursor: pointer;">
                   <i class="fas fa-cloud-arrow-up"></i>
                   <p>Klik untuk memilih gambar atau drag &amp; drop</p>
                   <small>Format: JPG, PNG, WEBP — Maks. 2MB</small>
+                  <input type="file" id="gambarInput" name="gambar" style="display:none" onchange="previewImage(event)" accept="image/jpeg,image/png,image/webp">
+                </div>
+                <div id="imagePreview" style="margin-top:12px; display:none;">
+                  <img id="imgPreviewTag" style="max-height:150px; border-radius:8px; border:1px solid var(--gray-200);">
                 </div>
               </div>
             </div>
@@ -143,6 +147,21 @@
             </div>
           </div>
           </form>
-  </div>
+        </div>
 </div>
+
+<script>
+  function previewImage(event) {
+    const reader = new FileReader();
+    reader.onload = function(){
+      const preview = document.getElementById('imagePreview');
+      const img = document.getElementById('imgPreviewTag');
+      img.src = reader.result;
+      preview.style.display = 'block';
+    };
+    if (event.target.files[0]) {
+      reader.readAsDataURL(event.target.files[0]);
+    }
+  }
+</script>
 @endsection

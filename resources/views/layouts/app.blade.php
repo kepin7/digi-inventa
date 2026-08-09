@@ -403,14 +403,7 @@
       border-radius: 0 2px 2px 0;
     }
 
-    .nav-item.logout {
-      color: rgba(255,100,100,.75);
-      margin-top: 6px;
-    }
-    .nav-item.logout:hover {
-      background: rgba(255,100,100,.12);
-      color: #ff8a80;
-    }
+
 
     .sidebar-footer {
       padding: 18px 20px;
@@ -527,7 +520,43 @@
       font-weight: 600;
       color: var(--gray-700);
     }
-    .header-user i { color: var(--gray-400); font-size: 12px; }
+    .header-user i { color: var(--gray-400); font-size: 12px; transition: transform 0.2s; }
+    .user-dropdown-wrap { position: relative; }
+    .user-dropdown-wrap.open .header-user i { transform: rotate(180deg); }
+    .user-dropdown-menu {
+      position: absolute;
+      top: calc(100% + 8px);
+      right: 0;
+      background: white;
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius-sm);
+      box-shadow: var(--shadow-md);
+      width: 180px;
+      padding: 6px;
+      display: none;
+      z-index: 100;
+    }
+    .user-dropdown-wrap.open .user-dropdown-menu { display: block; animation: fadeInUp 0.2s ease; }
+    .user-dropdown-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      color: var(--gray-700);
+      font-size: 13.5px;
+      font-weight: 500;
+      border-radius: 6px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s;
+      border: none;
+      width: 100%;
+      text-align: left;
+      background: none;
+    }
+    .user-dropdown-item:hover { background: var(--gray-50); }
+    .user-dropdown-item.danger { color: #dc2626; }
+    .user-dropdown-item.danger:hover { background: #fef2f2; }
 
     /* -------- CONTENT AREA -------- */
     .content {
@@ -1385,14 +1414,6 @@
       <a href="{{ route('profil.index') }}" class="nav-item {{ request()->routeIs('profil.*') ? 'active' : '' }}">
         <i class="fas fa-circle-user"></i> Profil
       </a>
-      <div style="margin-top:12px; padding-top:12px; border-top:1px solid rgba(255,255,255,.1)">
-        <form method="POST" action="{{ route('logout') }}">
-          @csrf
-          <button type="submit" class="nav-item logout" style="width: 100%; border: none; background: none; text-align: left;">
-            <i class="fas fa-right-from-bracket"></i> Keluar
-          </button>
-        </form>
-      </div>
       @else
       <a href="{{ route('guest.dashboard') }}" class="nav-item {{ request()->routeIs('guest.dashboard') ? 'active' : '' }}">
         <i class="fas fa-house"></i> Dashboard
@@ -1442,19 +1463,71 @@
       </div>
       <div class="header-right">
         <div id="liveClock" style="font-size:13px;font-weight:600;color:var(--gray-600);background:var(--gray-100);padding:6px 14px;border-radius:99px;border:1px solid var(--gray-200);font-family:'Sora',sans-serif;letter-spacing:.3px;white-space:nowrap">Memuat waktu...</div>
-        <button class="header-notif" onclick="showNotif()">
-          <i class="fas fa-bell"></i>
-          <span class="dot" id="notifDot"></span>
-        </button>
-        <div class="header-user">
-          @if(auth()->check())
-          <div class="header-user-avatar">{{ strtoupper(substr(auth()->user()->name, 0, 1)) }}</div>
-          <span class="header-user-name">{{ auth()->user()->name }}</span>
-          @else
-          <div class="header-user-avatar">G</div>
-          <span class="header-user-name">Guest</span>
-          @endif
-          <i class="fas fa-chevron-down"></i>
+        @php
+          $notifPeminjaman = 0;
+          $notifRusak = 0;
+          if(auth()->check()){
+            $notifPeminjaman = \App\Models\Peminjaman::where('status', 'disetujui')->count();
+            $notifRusak = \App\Models\Barang::whereIn('kondisi', ['rusak', 'perlu_perbaikan'])->where('status','!=','dihapus')->count();
+          }
+          $totalNotif = $notifPeminjaman + $notifRusak;
+        @endphp
+        <div class="user-dropdown-wrap" id="notifDropdownWrap">
+          <button class="header-notif" onclick="toggleNotifDropdown(event)">
+            <i class="fas fa-bell"></i>
+            @if($totalNotif > 0)
+            <span class="dot"></span>
+            @endif
+          </button>
+          <div class="user-dropdown-menu" style="width: 280px; padding: 0;">
+            <div style="padding: 12px 16px; border-bottom: 1px solid var(--gray-200); font-weight: 600; font-size: 14px;">Notifikasi</div>
+            <div style="max-height: 300px; overflow-y: auto; padding: 8px;">
+              @if($totalNotif == 0)
+                <div style="padding: 20px; text-align: center; color: var(--gray-400); font-size: 13px;">Belum ada notifikasi baru</div>
+              @else
+                @if($notifPeminjaman > 0)
+                <a href="{{ auth()->check() ? route('admin.peminjaman.index') : '#' }}" class="user-dropdown-item" style="align-items: flex-start; padding: 10px;">
+                  <div style="width: 32px; height: 32px; border-radius: 50%; background: #dbeafe; color: #1d4ed8; display: flex; align-items: center; justify-content: center; flex-shrink: 0;"><i class="fas fa-right-left"></i></div>
+                  <div>
+                    <div style="font-size: 13px; font-weight: 600; color: var(--gray-800); margin-bottom: 2px;">Peminjaman Aktif</div>
+                    <div style="font-size: 11.5px; color: var(--gray-500); line-height: 1.4;">Terdapat {{ $notifPeminjaman }} barang yang saat ini sedang dipinjam.</div>
+                  </div>
+                </a>
+                @endif
+                @if($notifRusak > 0)
+                <a href="{{ auth()->check() ? route('admin.inventaris.index') : '#' }}" class="user-dropdown-item" style="align-items: flex-start; padding: 10px;">
+                  <div style="width: 32px; height: 32px; border-radius: 50%; background: #fef2f2; color: #dc2626; display: flex; align-items: center; justify-content: center; flex-shrink: 0;"><i class="fas fa-wrench"></i></div>
+                  <div>
+                    <div style="font-size: 13px; font-weight: 600; color: var(--gray-800); margin-bottom: 2px;">Perhatian Kondisi</div>
+                    <div style="font-size: 11.5px; color: var(--gray-500); line-height: 1.4;">Ada {{ $notifRusak }} barang dalam kondisi perlu perbaikan / rusak.</div>
+                  </div>
+                </a>
+                @endif
+              @endif
+            </div>
+          </div>
+        </div>
+        <div class="user-dropdown-wrap" id="userDropdownWrap">
+          <div class="header-user" onclick="toggleUserDropdown(event)">
+            @if(auth()->check())
+            <div class="header-user-avatar">{{ strtoupper(substr(auth()->user()->name, 0, 1)) }}</div>
+            <span class="header-user-name">{{ auth()->user()->name }}</span>
+            @else
+            <div class="header-user-avatar">G</div>
+            <span class="header-user-name">Guest</span>
+            @endif
+            <i class="fas fa-chevron-down"></i>
+          </div>
+          <div class="user-dropdown-menu">
+            @auth
+            <form method="POST" action="{{ route('logout') }}">
+              @csrf
+              <button type="submit" class="user-dropdown-item danger">
+                <i class="fas fa-sign-out-alt"></i> Keluar
+              </button>
+            </form>
+            @endauth
+          </div>
         </div>
       </div>
     
@@ -1506,21 +1579,34 @@
   setInterval(updateClock, 1000);
   updateClock();
 
-  // Notif
-  function showNotif() {
-    document.getElementById('notifDot').style.display = 'none';
-    Swal.fire({
-      title: 'Notifikasi',
-      text: 'Belum ada notifikasi baru saat ini.',
-      icon: 'info',
-      confirmButtonColor: '#16a34a'
-    });
+  function toggleNotifDropdown(e) {
+    e.stopPropagation();
+    document.getElementById('notifDropdownWrap').classList.toggle('open');
+    const dot = document.querySelector('#notifDropdownWrap .dot');
+    if(dot) dot.style.display = 'none'; // Sembunyikan titik merah saat dibuka
   }
 
   function toggleSidebar() {
     const sidebar = document.getElementById('sidebar');
     sidebar.classList.toggle('open');
   }
+
+  function toggleUserDropdown(e) {
+    e.stopPropagation();
+    document.getElementById('userDropdownWrap').classList.toggle('open');
+  }
+
+  // Tutup dropdown jika klik di luar
+  window.addEventListener('click', function(e) {
+    const userWrap = document.getElementById('userDropdownWrap');
+    if (userWrap && userWrap.classList.contains('open') && !userWrap.contains(e.target)) {
+      userWrap.classList.remove('open');
+    }
+    const notifWrap = document.getElementById('notifDropdownWrap');
+    if (notifWrap && notifWrap.classList.contains('open') && !notifWrap.contains(e.target)) {
+      notifWrap.classList.remove('open');
+    }
+  });
 </script>
 
 @yield('scripts')
