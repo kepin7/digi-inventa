@@ -15,11 +15,11 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('username')->unique();
-            $table->string('email')->nullable()->unique();
-            $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->string('nip')->nullable();
             $table->enum('role', ['admin', 'guru'])->default('guru');
             $table->string('jabatan')->nullable();
+            $table->string('unit_kerja')->nullable();
             $table->string('no_telepon')->nullable();
             $table->rememberToken();
             $table->timestamps();

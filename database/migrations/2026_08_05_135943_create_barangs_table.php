@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('nama');
             $table->string('kategori');
             $table->enum('jenis_barang', ['modal', 'habis_pakai']);
+            $table->integer('jumlah')->default(1);
             $table->string('merk')->nullable();
             $table->text('spesifikasi')->nullable();
             $table->text('deskripsi')->nullable();

@@ -1364,10 +1364,6 @@
       <h1>SMPN 5 Purbalingga</h1>
       <p>Jl. Letjend. S. Parman No. 1<br>Kabupaten Purbalingga, Jawa Tengah</p>
     </div>
-    <div class="login-illustration">
-      <!-- Placeholder ilustrasi sekolah -->
-      <img src="./Digi Inventa — Digi Inventa _ SMPN 5 Purbalingga_files/ffffff" alt="Ilustrasi Sekolah">
-    </div>
   </div>
 
   <div class="login-panel-right">

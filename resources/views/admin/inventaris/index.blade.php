@@ -21,13 +21,16 @@
             </div>
             <select class="filter-select" id="filterTahun" onchange="filterTable()">
               <option value="">Semua Tahun</option>
-              <option value="2018">2018</option>
-              <option value="2019">2019</option>
-              <option value="2020">2020</option>
-              <option value="2021">2021</option>
-              <option value="2022">2022</option>
-              <option value="2023">2023</option>
-              <option value="2024">2024</option>
+              @php
+                $availableYears = \App\Models\Barang::select('tahun_perolehan')
+                                    ->whereNotNull('tahun_perolehan')
+                                    ->distinct()
+                                    ->orderBy('tahun_perolehan', 'desc')
+                                    ->pluck('tahun_perolehan');
+              @endphp
+              @foreach($availableYears as $y)
+              <option value="{{ $y }}">{{ $y }}</option>
+              @endforeach
             </select>
             <select class="filter-select" id="filterKondisi" onchange="filterTable()">
               <option value="">Semua Kondisi</option>
