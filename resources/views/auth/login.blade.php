@@ -1403,11 +1403,6 @@
     <button class="btn-login" type="submit">
       <i class="fas fa-right-to-bracket"></i>&nbsp; Masuk ke Dashboard
     </button>
-    <div style="text-align: center; margin-top: 16px;">
-        <a href="{{ route('guest.dashboard') }}" style="color: var(--green-600); font-size: 14px; font-weight: 500; text-decoration: underline;">
-            <i class="fas fa-user-circle"></i> Masuk sebagai Guest / Publik
-        </a>
-    </div>
     </form>
   </div>
 </div>

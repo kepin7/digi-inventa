@@ -88,6 +88,19 @@
             <label>Lokasi Selama Dipinjam *</label>
             <input type="text" name="lokasi_selama_dipinjam" value="{{ old('lokasi_selama_dipinjam') }}" placeholder="Contoh: Ruang Kelas 8B atau Dibawa ke Luar Kota" required>
           </div>
+          
+          <div class="form-field full">
+            <label>Bukti Foto Peminjaman *</label>
+            <div class="upload-zone" onclick="document.getElementById('fileInput').click()" style="cursor: pointer;">
+                <i class="fas fa-cloud-arrow-up"></i>
+                <p>Klik untuk memilih gambar atau drag &amp; drop</p>
+                <small>Format: JPG, PNG, WEBP — Maks. 2MB</small>
+                <input type="file" name="foto_peminjam" id="fileInput" accept="image/*" required style="display: none;" onchange="previewImage(event)">
+            </div>
+            <div id="imagePreview" style="margin-top:12px; display:none;">
+                <img id="imgPreviewTag" style="max-height:150px; border-radius:8px; border:1px solid var(--gray-200);">
+            </div>
+          </div>
         </div>
         
         <div style="display:flex;gap:12px;margin-top:24px">
@@ -100,4 +113,20 @@
     </div>
   </div>
 </div>
+
+<script>
+  function previewImage(event) {
+    const reader = new FileReader();
+    reader.onload = function(){
+      const preview = document.getElementById('imagePreview');
+      const img = document.getElementById('imgPreviewTag');
+      img.src = reader.result;
+      preview.style.display = 'block';
+    };
+    if (event.target.files[0]) {
+      reader.readAsDataURL(event.target.files[0]);
+    }
+  }
+</script>
+
 @endsection

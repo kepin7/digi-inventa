@@ -23,5 +23,15 @@ class DatabaseSeeder extends Seeder
             'role' => 'admin',
             'jabatan' => 'Sarana & Prasarana',
         ]);
+
+        // User Guru (Contoh Default)
+        User::create([
+            'name' => 'Bapak Budi',
+            'username' => 'guru',
+            'password' => Hash::make('guru123'),
+            'role' => 'guru',
+            'jabatan' => 'Guru Wali Kelas',
+            'nip' => '198001012005011003',
+        ]);
     }
 }

@@ -55,6 +55,11 @@ class PeminjamanController extends Controller
             return redirect()->back()->with('error', 'Stok barang tidak mencukupi atau barang tidak tersedia.');
         }
 
+        $fotoPath = '';
+        if ($request->hasFile('foto_peminjam')) {
+            $fotoPath = $request->file('foto_peminjam')->store('peminjaman', 'public');
+        }
+
         // Create loan record
         Peminjaman::create([
             'barang_id' => $request->barang_id,
@@ -65,7 +70,7 @@ class PeminjamanController extends Controller
             'tanggal_pinjam' => $request->tanggal_pinjam,
             'tanggal_rencana_kembali' => $request->tanggal_rencana_kembali,
             'lokasi_selama_dipinjam' => $request->lokasi_selama_dipinjam,
-            'foto_peminjam' => '', 
+            'foto_peminjam' => $fotoPath, 
             'status' => 'disetujui',
             'disetujui_oleh' => Auth::id(),
             'tanggal_disetujui' => now(),

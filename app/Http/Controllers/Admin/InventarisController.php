@@ -98,6 +98,12 @@ class InventarisController extends Controller
         return view('admin.inventaris.show', compact('barang'));
     }
 
+    public function printLabel(string $id)
+    {
+        $barang = Barang::findOrFail($id);
+        return view('admin.inventaris.label', compact('barang'));
+    }
+
     /**
      * Show the form for editing the specified resource.
      */

@@ -90,8 +90,8 @@
     <p>Maaf, halaman administrasi ini tidak bisa diakses secara publik. Halaman ini dikhususkan bagi Petugas Sarana & Prasarana.</p>
     
     <div class="btn-group">
-      <a href="{{ route('guest.dashboard') }}" class="btn btn-outline">
-        <i class="fas fa-arrow-left"></i> Kembali ke Publik
+      <a href="{{ route('guru.dashboard') }}" class="btn btn-outline">
+        <i class="fas fa-arrow-left"></i> Kembali ke Dashboard
       </a>
       <a href="{{ route('login') }}" class="btn btn-primary">
         <i class="fas fa-right-to-bracket"></i> Login Admin

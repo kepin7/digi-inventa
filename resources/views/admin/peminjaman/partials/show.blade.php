@@ -24,6 +24,13 @@
         </div>
         <div style="font-size:13px;color:var(--gray-700)">
           <div style="margin-bottom:6px"><strong>Lokasi Digunakan:</strong> <br>{{ $peminjaman->lokasi_selama_dipinjam }}</div>
+          
+          @if($peminjaman->foto_peminjam)
+          <div style="margin-top:12px">
+            <strong style="display:block;margin-bottom:4px">Bukti Foto Peminjaman:</strong>
+            <img src="{{ asset('storage/' . $peminjaman->foto_peminjam) }}" alt="Bukti Pinjam" style="max-width:100%;height:auto;border-radius:4px;border:1px solid var(--gray-200);max-height:120px;object-fit:cover;">
+          </div>
+          @endif
         </div>
       </div>
       

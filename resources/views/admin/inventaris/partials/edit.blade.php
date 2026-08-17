@@ -95,6 +95,18 @@
           <label>Deskripsi Detail</label>
           <textarea name="deskripsi" style="min-height:90px" placeholder="Deskripsi lengkap barang...">{{ old('deskripsi', $barang->deskripsi) }}</textarea>
         </div>
+        <div class="form-field full">
+          <label>Upload Gambar Barang (Biarkan kosong jika tidak diubah)</label>
+          <div class="upload-zone" onclick="document.getElementById('editGambarInput').click()" style="cursor: pointer;">
+            <i class="fas fa-cloud-arrow-up"></i>
+            <p>Klik untuk memilih gambar atau drag &amp; drop</p>
+            <small>Format: JPG, PNG, WEBP — Maks. 2MB</small>
+            <input type="file" id="editGambarInput" name="gambar" style="display:none" onchange="previewEditImage(event)" accept="image/jpeg,image/png,image/webp">
+          </div>
+          <div id="editImagePreview" style="margin-top:12px; display:{{ $barang->gambar ? 'block' : 'none' }};">
+            <img id="editImgPreviewTag" src="{{ $barang->gambar ? asset('storage/' . $barang->gambar) : '' }}" style="max-height:150px; border-radius:8px; border:1px solid var(--gray-200);">
+          </div>
+        </div>
       </div>
       <p style="font-size:12px;color:var(--gray-400);margin-top:4px">Catatan: jika Lokasi Penempatan diubah, sistem otomatis menambahkan satu entri baru ke Riwayat Lokasi barang ini.</p>
       <div style="display:flex;gap:12px;margin-top:8px">

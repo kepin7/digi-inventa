@@ -1411,24 +1411,25 @@
       <a href="{{ route('admin.laporan.index') }}" class="nav-item {{ request()->routeIs('admin.laporan.*') ? 'active' : '' }}">
         <i class="fas fa-chart-bar"></i> Laporan
       </a>
+      <a href="{{ route('admin.pengguna.index') }}" class="nav-item {{ request()->routeIs('admin.pengguna.*') ? 'active' : '' }}">
+        <i class="fas fa-users"></i> Kelola Pengguna
+      </a>
       <a href="{{ route('profil.index') }}" class="nav-item {{ request()->routeIs('profil.*') ? 'active' : '' }}">
         <i class="fas fa-circle-user"></i> Profil
       </a>
       @else
-      <a href="{{ route('guest.dashboard') }}" class="nav-item {{ request()->routeIs('guest.dashboard') ? 'active' : '' }}">
+      <a href="{{ route('guru.dashboard') }}" class="nav-item {{ request()->routeIs('guru.dashboard') ? 'active' : '' }}">
         <i class="fas fa-house"></i> Dashboard
       </a>
-      <a href="{{ route('guest.katalog.index') }}" class="nav-item {{ request()->routeIs('guest.katalog.*') ? 'active' : '' }}">
+      <a href="{{ route('guru.katalog.index') }}" class="nav-item {{ request()->routeIs('guru.katalog.*') ? 'active' : '' }}">
         <i class="fas fa-warehouse"></i> Katalog Inventaris
       </a>
-      <a href="{{ route('guest.peminjaman.index') }}" class="nav-item {{ request()->routeIs('guest.peminjaman.*') ? 'active' : '' }}">
+      <a href="{{ route('guru.peminjaman.index') }}" class="nav-item {{ request()->routeIs('guru.peminjaman.*') ? 'active' : '' }}">
         <i class="fas fa-list"></i> Daftar Peminjaman
       </a>
-      <div style="margin-top:12px; padding-top:12px; border-top:1px solid rgba(255,255,255,.1)">
-        <a href="{{ route('login') }}" class="nav-item logout" style="color: var(--green-200);">
-          <i class="fas fa-right-to-bracket"></i> Login Admin
-        </a>
-      </div>
+      <a href="{{ route('profil.index') }}" class="nav-item {{ request()->routeIs('profil.*') ? 'active' : '' }}">
+        <i class="fas fa-circle-user"></i> Profil
+      </a>
       @endif
     </nav>
 

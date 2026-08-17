@@ -151,7 +151,7 @@
     @endif
 
     <div style="display:flex;gap:10px;margin-top:22px;flex-wrap:wrap">
-      <button class="btn btn-primary" onclick="alert('Cetak label tersedia pada versi penuh.')">
+      <button class="btn btn-primary" onclick="window.open('{{ route('admin.inventaris.printLabel', $barang->id) }}', '_blank')">
         <i class="fas fa-print"></i> Cetak Label
       </button>
       <button class="btn btn-outline" onclick="closeModalBtn();openEdit('{{ route('admin.inventaris.edit', $barang->id) }}')">

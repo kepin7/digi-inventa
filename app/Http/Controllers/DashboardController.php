@@ -24,7 +24,8 @@ class DashboardController extends Controller
 
         return view('admin.dashboard', compact('stats', 'activities'));
     }
-    public function guest()
+
+    public function guru()
     {
         $stats = [
             'total' => Barang::where('status', '!=', 'dihapus')->count(),
@@ -37,6 +38,6 @@ class DashboardController extends Controller
 
         $activities = RiwayatLokasi::with(['barang', 'user'])->latest()->take(5)->get();
 
-        return view('guest.dashboard', compact('stats', 'activities'));
+        return view('guru.dashboard', compact('stats', 'activities'));
     }
 }

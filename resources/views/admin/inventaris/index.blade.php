@@ -262,5 +262,20 @@
         }
       }
     }
+
+    function previewEditImage(event) {
+      const reader = new FileReader();
+      reader.onload = function(){
+        const preview = document.getElementById('editImagePreview');
+        const img = document.getElementById('editImgPreviewTag');
+        if(img && preview) {
+          img.src = reader.result;
+          preview.style.display = 'block';
+        }
+      };
+      if (event.target.files[0]) {
+        reader.readAsDataURL(event.target.files[0]);
+      }
+    }
   </script>
 @endsection
